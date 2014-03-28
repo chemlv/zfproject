@@ -1,0 +1,82 @@
+<?php
+
+function get_resource($Resources){
+    $_resources = "";
+    $_permission = null;
+    if (strpos($Resources, '/')) {
+        $res_array = explode("/", $Resources);
+        $_res_count = count($res_array);
+        if ($_res_count==2) {
+            $_resources = $res_array[0];
+            $_permission = $res_array[1];
+        }
+    }else{
+        $_resources = $Resources;
+        $_permission = null;
+    }
+    return array(
+        'resources'=>$_resources,
+        'permission'=>$_permission
+    );
+}
+function get_resource_sub($Resources,$Resources_Sub){
+    $_resources = $Resources['resources'];
+    $_permission = $Resources['permission'];
+    if(($Resources_Sub != "")){
+        if (strpos($Resources_Sub, '/')) {
+            $keyArray = explode('/', $Resources_Sub);
+            $_count = count($keyArray);
+            if($_count==3){
+                $_resources = $keyArray[0];
+                $_permission = $keyArray[1]."/".$keyArray[2];
+            }else if($_count==2){
+                $_permission = $keyArray[0]."/".$keyArray[1];
+            }
+        }else{
+            if (is_null($_permission)) {
+                $_permission=$Resources_Sub;
+            }else{
+                $_permission.="/".$Resources_Sub;
+            }
+        }
+    }
+    return array(
+        'resources'=>$_resources,
+        'permission'=>$_permission
+    );
+}
+?>
+<form action="http://www.eakroko.de/flat/search-results.html" method="GET" class='search-form'>
+    <div class="search-pane">
+        <input type="text" name="search" placeholder="Search here...">
+        <button type="submit"><i class="icon-search"></i></button>
+    </div>
+</form>
+<?php foreach ($this->container as $page): ?>
+<?php $Resources =$page->getResource();?>
+<?php $Resources =get_resource($Resources);?>
+<?php //if($this->Acl($Resources[0],$Resources[1])):?>
+<div class="subnav">
+    <div class="subnav-title">
+        <a href="<?php echo count($page->pages)?"#":$page->getHref()?>" class='toggle-subnav'>
+            <i class="icon-angle-down"></i><span> <?php echo $page->getLabel(); ?></span>
+        </a>
+    </div>
+    <?php if(!empty($page->pages)): ?>
+        <ul class="subnav-menu">
+            <?php foreach ($page->pages as $subpage): ?>
+                <?php
+                $Resources_sub = get_resource_sub($Resources,$subpage->getResource());
+                $_resources = $Resources_sub['resources'];
+                $_permission = $Resources_sub['permission'];
+                ?>
+                <?php if(!empty($Resources) || $this->Acl($_resources,$_permission)):?>
+                    <li <?php echo ($subpage->isActive() ? 'class="active"' : ''); ?>>
+                        <a href="<?php echo $subpage->getHref(); ?>"><?php echo $subpage->getLabel(); ?></a>
+                    </li>
+                <?php endif;?>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
+<?php endforeach; ?>
