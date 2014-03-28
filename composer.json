@@ -9,6 +9,10 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.2.*"
+        "zendframework/zendframework": "2.2.*",
+        "rayamedia/yima-widgetator":"dev-master",
+        "rayamedia/yima-jquery": "dev-master",
+        "rayamedia/yima-static-uri-helper": "dev-master",
+        "rayamedia/yima-plugin-installer": "dev-master"
     }
 }

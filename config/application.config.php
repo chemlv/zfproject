@@ -23,7 +23,7 @@ return array(
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
-            'library/MyZend/config/{,*.}{global,local}.php'
+            'library/config/{,*.}{global,local}.php'
         ),
 
         // Whether or not to enable a configuration cache.
