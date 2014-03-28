@@ -2,7 +2,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Admin\Controller\Skeleton' => 'Admin\Controller\SkeletonController',
+            'Admin\Controller\Index' => 'Admin\Controller\IndexController',
         ),
     ),
     'router' => array(
