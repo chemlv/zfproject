@@ -15,14 +15,11 @@
  * the use of composer completely optional. This setup should work fine for
  * most users, however, feel free to configure autoloading however you'd like.
  */
-
-// Composer autoloading
+include getcwd().'/init_define.php';
 if (file_exists('vendor/autoload.php')) {
     $loader = include 'vendor/autoload.php';
 }
-
-$zf2Path = false;
-
+$zf2Path = true;
 if (is_dir('vendor/ZF2/library')) {
     $zf2Path = 'vendor/ZF2/library';
 } elseif (getenv('ZF2_PATH')) {      // Support for ZF2_PATH environment variable or git submodule
@@ -30,7 +27,7 @@ if (is_dir('vendor/ZF2/library')) {
 } elseif (get_cfg_var('zf2_path')) { // Support for zf2_path directive value
     $zf2Path = get_cfg_var('zf2_path');
 }
-
+/*
 if ($zf2Path) {
     if (isset($loader)) {
         $loader->add('Zend', $zf2Path);
@@ -43,7 +40,23 @@ if ($zf2Path) {
         ));
     }
 }
+*/
+if ($zf2Path) {
+    $configuration = include 'config/application.config.php';
+    if (isset($loader)) {
+        $loader->add('Zend', $zf2Path);
+        foreach ($configuration['autoloader']['namespaces'] as $name => $path) {
 
+            $loader->add($name, dirname($path));
+        }
+        $loader->register();
+    } else {
+        include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
+        Zend\Loader\AutoloaderFactory::factory(array(
+            'Zend\Loader\StandardAutoloader' => $configuration['autoloader'],
+        ));
+    }
+}
 if (!class_exists('Zend\Loader\AutoloaderFactory')) {
     throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
 }

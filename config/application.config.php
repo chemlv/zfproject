@@ -3,8 +3,9 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
+        'Admin',
+        'Configs'
     ),
-
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => array(
         // This should be an array of paths in which modules reside.
@@ -14,6 +15,7 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
+            './library/Module'
         ),
 
         // An array of paths from which to glob configuration files after
@@ -21,6 +23,7 @@ return array(
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
+            'library/MyZend/config/{,*.}{global,local}.php'
         ),
 
         // Whether or not to enable a configuration cache.
@@ -47,7 +50,12 @@ return array(
         // that weren't loaded.
         // 'check_dependencies' => true,
     ),
-
+    'autoloader' => array(
+        'namespaces' => array(
+            'MyZend' => __DIR__ . '/../library/MyZend'
+        ),
+        'autoregister_zf' => true,
+    ),
     // Used to create an own service manager. May contain one or more child arrays.
     //'service_listener_options' => array(
     //     array(
