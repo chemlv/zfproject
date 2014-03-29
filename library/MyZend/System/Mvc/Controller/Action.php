@@ -97,7 +97,6 @@ class Action extends AbstractActionController
         $jsonModel = new JsonModel();
         $jsonModel->setVariables($data);
         $jsonModel->setTerminal(true);
-
         return $jsonModel;
     }
     public function useFlashMessenger($forceDisplay = true)
@@ -117,7 +116,6 @@ class Action extends AbstractActionController
                 }
             }
         }
-
         $this->layout()->flashMessages = $flashMessages;
     }
     public function events()
